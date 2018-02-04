@@ -11,7 +11,9 @@ from sklearn.model_selection import train_test_split
 # The basic principle of ML is that we train a decision model feeding it with training data
 # and then test the model's accuracy and precision with the testing data
 from sklearn.tree import DecisionTreeClassifier
+from sklearn import metrics
 from sklearn.metrics import precision_score, recall_score, accuracy_score
+from sklearn.metrics import average_precision_score
 from sklearn.tree import export_graphviz
 
 x = data_2c[data_2c.columns[:6]]
@@ -42,9 +44,28 @@ y_pred = dt.predict(test_x)
 # test_y is the true value - The class division
 print("Accuracy: %.3f" %accuracy_score(test_y, y_pred))
 # Accuracy identifies how accurate the model dt predicted the test_x
-print("Precision: %.3f" %precision_score(test_y, y_pred, average="weighted"))
+print("Precision: %.3f" %precision_score(test_y, y_pred, average="macro"))
 # Precision is defined as the ratio of True Positive to the (TP + FP)
 # i.e the ratio of the intersection of actual and precision to the actual positive values
-print("Recall: %.3f" %recall_score(test_y, y_pred, average="weighted"))
+print("Recall: %.3f" %recall_score(test_y, y_pred, average="macro"))
 # Recall is defined as the ratio of True Positive to the (TP + FN)
 # i.e the ratio of the intersection of actual and precision to the predicted positive values
+
+# Trying a new approach to compute classification accuracy, precision and recall
+print("Classification Accuracy for 5 leaf nodes: %.3f" %metrics.accuracy_score(test_y,y_pred))
+
+
+#Calculating Null Accuracy - In the 100 test data we are running this test on, we do not know how much is abnormal
+# and how much is normal. In that case, we need to find the null accuracy to find how much % of accuracy we are
+# obtaining in case of the larger set. For instance, if 90 out of 100 was actually classified as normal, null accuracy
+# determines what is the % of precision in that 90 classifications
+# print(test_y.mean())
+# print(1 - test_y.mean())
+
+# Comparing the true and predicted response values
+print('True: ', test_y.values[0:25])
+print('False:', (y_pred[0:25]))
+
+# Confusion Matrix
+
+print(metrics.confusion_matrix(test_y, y_pred))
