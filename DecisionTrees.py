@@ -12,7 +12,6 @@ from sklearn.model_selection import train_test_split
 # and then test the model's accuracy and precision with the testing data
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.metrics import precision_score, recall_score, accuracy_score
-from sklearn.tree import export_graphviz
 
 x = data_2c[data_2c.columns[:6]]
 # So, x will have the feature vectors and y will have the class column
