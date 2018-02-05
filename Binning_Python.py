@@ -42,5 +42,54 @@ print(xnew['lumbar_lordosis_angle'].value_counts())
 print(xnew['sacral_slope'].value_counts())
 print(xnew['degree_spondylolisthesis'].value_counts())
 
+# Decision Tree Model for 10 leaf nodes
+train_x, test_x, train_y, test_y = train_test_split(xnew, y, train_size=0.68)
 
+dt_10 = DecisionTreeClassifier(min_samples_leaf=10, random_state=10).fit(train_x, train_y)
+y_pred_10 = dt_10.predict(test_x)
+print("\n Data below is for 10 leaf nodes \n")
+print("Accuracy: %.3f" %accuracy_score(test_y, y_pred_10))
+print("Precision: %.3f" %precision_score(test_y, y_pred_10, average="macro"))
+print("Recall: %.3f" %recall_score(test_y, y_pred_10, average="macro"))
+print("Recall: %.3f" %recall_score(test_y, y_pred_10, average="macro"))
+export_graphviz (dt_10, out_file='out_10_3.dot')
+
+
+
+# Confusion Matrix
+
+import matplotlib.pyplot as plt
+import pylab as pl
+
+
+print("----Come down here----")
+
+for i in range(5):
+    train_x, test_x, train_y, test_y = train_test_split(xnew, y, train_size=0.68)
+    dft = pd.DataFrame(train_x)
+    print("SD:", dft.describe().std())
+    print("Mean:", dft.describe().mean())
+    dt_10 = DecisionTreeClassifier(min_samples_leaf=10, random_state=10).fit(train_x, train_y)
+    y_pred_10 = dt_10.predict(test_x)
+    print("\n Data below is for 10 leaf nodes \n")
+    print("Accuracy: %.3f" %accuracy_score(test_y, y_pred_10))
+    print("Precision: %.3f" %precision_score(test_y, y_pred_10, average="macro"))
+    print("Recall: %.3f" %recall_score(test_y, y_pred_10, average="macro"))
+    print(metrics.confusion_matrix(test_y, y_pred_10))
+
+
+"""
+labels = ['Normal', 'Abnormal']
+cm = metrics.confusion_matrix(test_y, y_pred_25)
+fig = plt.figure()
+ax = fig.add_subplot(111)
+cax = ax.matshow(cm)
+pl.title('Confusion matrix of the classifier')
+fig.colorbar(cax)
+ax.set_xticklabels([''] + labels)
+ax.set_yticklabels([''] + labels)
+pl.xlabel('Predicted')
+pl.ylabel('True')
+pl.show()
+"""
 
